@@ -1,0 +1,61 @@
+<mat-tab-group style="margin: 10px;" dynamicHeight="true">
+    <mat-tab label="Kategorie anlegen">
+        <mat-card style="margin-top: 10px;">
+            <mat-card-content>
+                <mat-card-title color="primary">Kategorie anlegen</mat-card-title>
+                <mat-form-field style="margin-right: 20px;">
+                    <mat-label>Kategorie-Name</mat-label>
+                    <input matInput type=" text" [(ngModel)]="newCategory.name" />
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Preis</mat-label>
+                    <input matInput type="number" [(ngModel)]="newCategory.price" />
+                </mat-form-field>
+            </mat-card-content>
+            <button mat-raised-button color="primary" (click)="addCategory()">Kategorie anlegen</button>
+        </mat-card>
+    </mat-tab>
+    <mat-tab label="Kategorie bearbeiten">
+        <mat-card style="margin-top: 10px;">
+            <mat-card-title color="primary">Kategorie bearbeiten</mat-card-title>
+            <mat-card-content>
+                <mat-form-field style="margin-right: 20px;">
+                    <mat-label>Kategorie</mat-label>
+                    <mat-select (selectionChange)="updCategoryChanged($event.value)">
+                        <mat-option *ngFor="let category of categories" [value]="category">
+                            {{category | categoryCompact}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field style="margin-right: 20px;">
+                    <mat-label>Kategorie-Name</mat-label>
+                    <input matInput type=" text" [(ngModel)]="updCategory.name" />
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Preis</mat-label>
+                    <input matInput type="number" [(ngModel)]="updCategory.price"/>
+                </mat-form-field>
+            </mat-card-content>
+
+            <button mat-raised-button color="primary" (click)="updateCategory()" >Kategorie bearbeiten</button>
+
+        </mat-card>
+    </mat-tab>
+    <mat-tab label="Kategorie löschen">
+        <mat-card style="margin-top: 10px;">
+            <mat-card-title color="primary">Kategorie löschen</mat-card-title>
+            <mat-card-content>
+                <mat-form-field>
+                    <mat-label>Kategorie</mat-label>
+                    <mat-select (selectionChange)="delCategoryChanged($event.value)">
+                        <mat-option *ngFor="let category of categories" [value]="category"
+                            [(ngModel)]="delCategory" name="delete">
+                            {{category | categoryCompact}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-card-content>
+            <button mat-raised-button color="primary" (click)="deleteCategory()">Kategorie löschen</button>
+        </mat-card>
+    </mat-tab>
+</mat-tab-group>

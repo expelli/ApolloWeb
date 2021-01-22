@@ -1,0 +1,9 @@
+<mat-toolbar color="primary">
+  <span>Kinoprogramm</span>
+  <span class="example-spacer" style="flex: 1 1 auto;"></span>
+  <button mat-button class="example-icon" aria-label="Example icon-button with share icon"
+    [routerLink]="['admin',{outlets: {'admin-outlet': ['genre']}}]">
+    <span>Mitarbeiter-Bereich</span>
+  </button>
+</mat-toolbar>
+<Apollo-schedule-overview></Apollo-schedule-overview>

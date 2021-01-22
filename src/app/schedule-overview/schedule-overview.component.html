@@ -1,0 +1,18 @@
+<mat-card style="margin:  20px;">
+    <mat-form-field class="example-full-width" style="width: 100%;">
+        <mat-label>Nach Vorstellung suchen</mat-label>
+        <input matNativeControl matInput [formControl]="searchControl" type="text"
+            [matAutocomplete]="deleteAutocomplete" placeholder="Jurassic Park" aria-label="Film"
+            [(ngModel)]="searchMAS" />
+        <mat-autocomplete #deleteAutocomplete="matAutocomplete" [displayWith]="displayMovie">
+            <mat-option *ngFor="let screening of schedule | async" [value]="screening"
+               >{{screening.movie!.title}}
+            </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+</mat-card>
+<div fxLayout="row wrap" style="width: 100%;">
+    <Apollo-schedule-item fxFlex="20%"  *ngFor="let screening of getSchedule()"
+        [movieAndScreening]="screening">
+    </Apollo-schedule-item>
+</div>

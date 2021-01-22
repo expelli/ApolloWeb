@@ -1,0 +1,107 @@
+<mat-tab-group style="margin: 10px;" dynamicHeight="true">
+    <mat-tab label="Vorstellung anlegen">
+        <mat-card style="margin-top: 10px;">
+            <mat-card-content>
+                <mat-card-title color="primary">Vorstellung anlegen</mat-card-title>
+                <mat-form-field style="margin-right: 20px;">
+                    <mat-label>Film</mat-label>
+                    <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOptio [displayWith]="displayMas">
+                        <mat-option *ngFor="let movie of movies |async" [value]="movie">
+                            {{movie.title}}
+                        </mat-option>
+                        <!--*ngFor="let option of options" [value]="option"-->
+                    </mat-autocomplete>
+                    <input matNativeControl type="text" placeholder="Pick one" aria-label="Film"
+                        [matAutocomplete]="auto" />
+                    <!-- matInput [formControl]="myControl"
+                        [matAutocomplete]="auto"-->
+                    <!--   [formControl]="myControl"
+                        <mat-option ><*ngFor="let option of options" [value]="option"-->
+                    <!-- {{option}}
+                    </mat-autocomplete>-->
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Kinosaal</mat-label>
+                    <mat-select>
+                        <!--  <mat-option *ngFor="let food of foods" [value]="food.value">
+                {{food.viewValue}}
+              </mat-option>-->
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-label>Startzeitpunkt</mat-label>
+                    <input color="primary" matInput type="datetime-local" />
+                </mat-form-field>
+            </mat-card-content>
+            <button mat-raised-button color="primary">Vorstellung anlegen</button>
+        </mat-card>
+    </mat-tab>
+
+    <mat-tab label="Vorstellung bearbeiten">
+        <mat-card style="margin-top: 10px;">
+            <mat-card-title color="primary">Vorstellung bearbeiten</mat-card-title>
+            <mat-card-content>
+                <form class="example-form">
+                    <mat-form-field>
+                        <mat-label>Vorstellung</mat-label>
+
+                        <input matNativeControl type="text" placeholder="Pick one" aria-label="Film" />
+                        <!-- matInput [formControl]="myControl"
+                            [matAutocomplete]="auto"-->
+                        <!--  <mat-autocomplete #auto="matAutocomplete">
+                            <mat-option >*ngFor="let option of options" [value]="option"-->
+                        <!-- {{option}}
+                        </mat-autocomplete>-->
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Film</mat-label>
+
+                        <input matNativeControl type="text" placeholder="Pick one" aria-label="Film" />
+                        <!-- matInput [formControl]="myControl"
+                        [matAutocomplete]="auto"-->
+                        <!--  <mat-autocomplete #auto="matAutocomplete">
+                        <mat-option >*ngFor="let option of options" [value]="option"-->
+                        <!-- {{option}}
+                    </mat-autocomplete>-->
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Kinosaal</mat-label>
+                        <mat-select></mat-select>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Startzeitpunkt</mat-label>
+                        <input color="primary" matInput type="datetime-local" />
+                    </mat-form-field>
+                </form>
+            </mat-card-content>
+
+            <button mat-raised-button color="primary">Vorstellung bearbeiten</button>
+
+        </mat-card>
+    </mat-tab>
+    <mat-tab label="Vorstellung löschen">
+        <mat-card style="margin-top: 10px;">
+            <mat-card-title color="primary" style="margin-bottom: 20px;">Vorstellung löschen</mat-card-title>
+            <mat-card-content>
+                <mat-card>
+                    <mat-card-subtitle color="primary">Vorstellung suchen:</mat-card-subtitle>
+                    <mat-form-field style="margin-right: 20px;">
+                        <mat-label>Datum</mat-label>
+                        <input matNativeControl type="date">
+                    </mat-form-field>
+                    <mat-form-field  class="example-full-width" style="width: 100%;">
+                        <mat-label>Nach Vorstellung suchen</mat-label>
+                        <input matNativeControl matInput [formControl]="deleteControl" type="text" [matAutocomplete]="deleteAutocomplete" placeholder="Jurassic Park" aria-label="Film" style="width: 500px;" [(ngModel)]="delScreening" />
+                        <mat-autocomplete #deleteAutocomplete="matAutocomplete" [displayWith]="displayMas">
+                            <mat-option *ngFor="let screening of screenings | async" [value]="screening">{{screening | screeningCompact}}
+                                </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </mat-card>
+            </mat-card-content>
+
+            <button mat-raised-button color="primary" (click)="deleteScreening()">gewählte Vorstellung löschen</button>
+
+        </mat-card>
+    </mat-tab>
+</mat-tab-group>

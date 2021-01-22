@@ -1,0 +1,16 @@
+<mat-card style="margin-bottom: 10px;">
+    <div fxLayout="row wrap">
+        <div fxFlex="90%">
+            <mat-card-title color="primary">{{movie.title}}</mat-card-title>
+            <p>Start: {{screening.screening.startTime | date:'EEEE, dd.MMMM YYYY, hh:mm'}}</p>
+            <p>Saal: {{screening.screening.hallId}}</p>
+        </div>
+        <div fxFlex="10%">
+            <mat-progress-spinner mode="determinate" *ngIf="screening.freeSeats >0" [value]="(screening.freeSeats/screening.totalSeats*100)"
+                color="primary"></mat-progress-spinner>
+            <mat-icon color="accent" *ngIf="screening.freeSeats <= 0" style="font-size:100px;">close</mat-icon>
+            <p>{{screening.freeSeats}} von {{screening.totalSeats}} verfügbar</p>
+            
+        </div>
+    </div>
+</mat-card>

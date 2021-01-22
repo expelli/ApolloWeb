@@ -1,0 +1,22 @@
+<mat-toolbar color="primary" style="margin-bottom: 10px;"><span>Apollo: Mitarbeiter-Bereich</span>
+    <span class="example-spacer" style="flex: 1 1 auto;"></span>
+    <button mat-button class="example-icon" aria-label="Example icon-button with share icon"
+       routerLink="/">
+        <span>Zurück zum Programm</span>
+    </button></mat-toolbar>
+<mat-sidenav-container style="margin-right: 10px;">
+    <mat-sidenav mode="side" opened>
+        <mat-nav-list>
+            <mat-list-item [routerLink]="['../admin',{outlets: {'admin-outlet': ['genre']}}]"> Genres </mat-list-item>
+            <mat-list-item [routerLink]="['../admin',{outlets: {'admin-outlet': ['movie']}}]"> Filme </mat-list-item>
+            <mat-list-item [routerLink]="['../admin',{outlets: {'admin-outlet': ['screening']}}]"> Vorstellungen
+            </mat-list-item>
+            <mat-list-item [routerLink]="['../admin',{outlets: {'admin-outlet': ['hall']}}]"> Kinosäale </mat-list-item>
+            <mat-list-item [routerLink]="['../admin',{outlets: {'admin-outlet': ['category']}}]"> Preiskategorien
+            </mat-list-item>
+        </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content layout-fill>
+        <router-outlet name="admin-outlet"></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>

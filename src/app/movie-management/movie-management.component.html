@@ -1,0 +1,105 @@
+<mat-tab-group style="margin: 10px;" dynamicHeight="true">
+    <mat-tab label="Film anlegen">
+        <mat-card style="margin-top: 10px;">
+            <mat-card-content>
+                <mat-card-title color="primary">Film anlegen</mat-card-title>
+                <mat-form-field style="margin-right: 20px;">
+                    <mat-label>Titel</mat-label>
+                    <input matInput type=" text" [(ngModel)]="newMovie.title" />
+                </mat-form-field>
+                <mat-form-field style="margin-right: 20px;">
+                    <mat-label>Schauspieler</mat-label>
+                    <input matInput type="text" [(ngModel)]="newMovie.actors" />
+                </mat-form-field>
+                <mat-form-field style="margin-right: 20px;">
+                    <mat-label>Beschreibung</mat-label>
+                    <input matInput type="text" [(ngModel)]="newMovie.description" />
+                </mat-form-field>
+                <mat-form-field style="margin-right: 20px;">
+                    <mat-label>Trailer-Link</mat-label>
+                    <input matInput type="text" [(ngModel)]="newMovie.trailer" />
+                </mat-form-field>
+                <mat-form-field style="margin-right: 20px;">
+                    <mat-label>Genre</mat-label>
+                    <mat-select (selectionChange)="addGenreChanged($event.value)">
+                        <mat-option ngDefaultControl *ngFor="let gen of genres" [value]="gen"
+                            [(ngModel)]="newMovie.genreId" name="updateGenre">
+                            {{gen |genreCompact}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field style="margin-right: 20px;">
+                    <mat-label>Spieldauer</mat-label>
+                    <input matInput type="number" [(ngModel)]="newMovie.duration" />
+                </mat-form-field>
+            </mat-card-content>
+            <button mat-raised-button color="primary" (click)="addMovie()">Film anlegen</button>
+        </mat-card>
+    </mat-tab>
+
+    <mat-tab label="Film bearbeiten">
+        <mat-card style="margin-top: 10px;">
+            <mat-card-title color="primary">Film bearbeiten</mat-card-title>
+            <mat-card-content>
+                <mat-form-field>
+
+                    <mat-select (selectionChange)="updMovieChanged($event.value)">
+                        <mat-option ngDefaultControl *ngFor="let movie of movies" [value]="movie" [(ngModel)]="updMovie"
+                            [name]="movie!.id!.toString()">
+                            {{movie.title}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field style="margin-right: 20px;">
+                    <mat-label>Titel</mat-label>
+                    <input matInput type=" text" [(ngModel)]="updMovie.title" />
+                </mat-form-field>
+                <mat-form-field style="margin-right: 20px;">
+                    <mat-label>Schauspieler</mat-label>
+                    <input matInput type="text" [(ngModel)]="updMovie.actors" />
+                </mat-form-field>
+                <mat-form-field style="margin-right: 20px;">
+                    <mat-label>Beschreibung</mat-label>
+                    <input matInput type="text" [(ngModel)]="updMovie.description" />
+                </mat-form-field>
+                <mat-form-field style="margin-right: 20px;">
+                    <mat-label>Trailer-Link</mat-label>
+                    <input matInput type="text" [(ngModel)]="updMovie.trailer" />
+                </mat-form-field>
+                <mat-form-field style="margin-right: 20px;">
+                    <mat-label>Genre</mat-label>
+                    <mat-select (selectionChange)="updGenreChanged($event.value)"  [(ngModel)]="updMovie.genreId">
+                        <mat-option ngDefaultControl *ngFor="let gen of genres" [value]="gen.id"
+                            name="updateGenre">
+                            {{gen |genreCompact}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field style="margin-right: 20px;">
+                    <mat-label>Spieldauer</mat-label>
+                    <input matInput type="number" [(ngModel)]="updMovie.duration" />
+                </mat-form-field>
+            </mat-card-content>
+
+            <button mat-raised-button color="primary" (click)="updateMovie()">Film bearbeiten</button>
+
+        </mat-card>
+    </mat-tab>
+    <mat-tab label="Film löschen">
+        <mat-card style="margin-top: 10px;">
+            <mat-card-title color="primary">Film löschen</mat-card-title>
+            <mat-card-content>
+                <mat-form-field>
+                    <mat-label>Film löshcen</mat-label>
+                    <mat-select (selectionChange)="delMovieChanged($event.value)">
+                        <mat-option ngDefaultControl *ngFor="let movie of movies" [value]="movie" [(ngModel)]="delMovie"
+                            [name]="movie!.id!.toString()">
+                            {{movie.title}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </mat-card-content>
+            <button mat-raised-button color="primary" (click)="deleteMovie()">Film löschen</button>
+        </mat-card>
+    </mat-tab>
+</mat-tab-group>
