@@ -2,6 +2,7 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { from, Observable, of } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Movie } from '../classes/movie';
 import { MovieAndScreening } from '../classes/movie-and-screening';
 import { Screening } from '../classes/screening';
@@ -15,14 +16,27 @@ import { ScheduleService } from '../services/schedule.service';
 export class ScheduleOverviewComponent implements OnInit {
 
   searchControl = new FormControl();
-  constructor(private scheduleService: ScheduleService) {  this.searchMAS = new MovieAndScreening; this.searchMAS.movie = new Movie; this.searchMAS.movie.title = ""; }
+  constructor(private scheduleService: ScheduleService) { 
+    this.schedule = from([]);
+    this.endDate = new Date;
+    this.endDate.setDate(this.endDate.getDate() + 14)
+    this.searchDate = new Date;
+    this.searchDate.setDate(this.searchDate.getDate()+1);
+  }
 
   schedule!: Observable<MovieAndScreening[]>;
-  searchMAS!: MovieAndScreening;
+  searchDate!: Date;
+  endDate!: Date;
 
   ngOnInit(): void {
-    this.searchControl.valueChanges.subscribe(value =>
-      this.scheduleService.screeningSearch(new Date,value.movie.title).subscribe(res => {this.schedule = of(res); console.log(this.schedule) }));
+    this.searchControl.valueChanges.pipe(debounceTime(500), distinctUntilChanged(), switchMap((val: string, index) => {
+      return this.scheduleService.screeningSearch(this.searchDate, val,this.endDate);
+    })).subscribe(res => {
+      this.schedule = of(res);
+    });
+    this.scheduleService.screeningSearch(this.searchDate,undefined,this.endDate).subscribe(res => {
+      this.schedule = of(res);
+    });
   }
 
   getSchedule(): Array<MovieAndScreening> {
@@ -31,8 +45,8 @@ export class ScheduleOverviewComponent implements OnInit {
     return result;
   }
 
-  displayMovie(mas: MovieAndScreening): string {
-    return mas ? mas.movie!.title! : '';
+  displayMovie(mas: string): string {
+    return mas;
   }
 
 }

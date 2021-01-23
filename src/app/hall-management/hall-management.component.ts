@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { element } from 'protractor';
 import { Genre } from '../classes/genre';
 import { Hall } from '../classes/hall';
 import { Row } from '../classes/row';
@@ -11,9 +12,10 @@ import { HallService } from '../services/hall.service';
 })
 export class HallManagementComponent implements OnInit {
 
-  constructor(private hallService: HallService) { 
-    this.updHall = new Hall; 
-    this.delHall = new Hall; 
+  constructor(private hallService: HallService) {
+    this.updHall = new Hall;
+    this.updHall.rows = [];
+    this.delHall = new Hall;
     this.newHall = new Hall;
     this.newHall.rows = [];
   }
@@ -27,19 +29,19 @@ export class HallManagementComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.hallService.getAllHalls().subscribe(res => {this.halls = res; console.log(res)});
+    this.hallService.getAllHalls().subscribe(res => { this.halls = res; console.log(res) });
   }
 
-  delHallChanged(value: any){
+  delHallChanged(value: any) {
     this.delHall = value;
   }
 
-  updHallChanged(value: any){
-    console.log("updHall.Id: ",value.Id)
+  updHallChanged(value: any) {
+    console.log("updHall.Id: ", value.Id)
     this.updHall = value;
   }
 
-  addRow(val: Hall){
+  addRow(val: Hall) {
     var row = new Row;
     row.hallId = val.id;
     row.rowNumber = 1 + val!.rows!.length;
@@ -47,23 +49,41 @@ export class HallManagementComponent implements OnInit {
     val.rows?.push(row);
   }
 
-  prepareHall(hall: Hall){
-    hall.rows
+  prepareHall(hall: Hall) {
+    hall.rows!.forEach(element => {
+      element.priceCategoryId = element.priceCategory!.id
+    });
   }
 
-  deleteRow(val: Hall){
+  setHallId(hall: Hall, id: number){
+    hall.id = id;
+    hall.rows!.forEach(row => { 
+      row.hallId = id;
+      row.seats!.forEach(seat => {
+        seat.hallId = id;
+      });
+    })
+  }
+
+  deleteRow(val: Hall) {
     val.rows?.pop();
   }
 
-  addHall(){
-
+  addHall() {
+    this.prepareHall(this.newHall);
+    this.hallService.addHall(this.newHall).subscribe( resultHall => 
+      {this.setHallId(this.newHall,resultHall.id!);
+        this.hallService.updateHall(this.newHall).subscribe(res => this.newHall = new Hall); 
+        return this.newHall; } );
   }
 
-  deleteHall(){
+  deleteHall() {
     this.hallService.deleteHall(this.delHall.id).subscribe();
   }
 
-  updateHall(){
-
+  updateHall() {
+    this.prepareHall(this.updHall);
+    this.setHallId(this.updHall, this.updHall.id!)
+    this.hallService.updateHall(this.updHall).subscribe();
   }
 }

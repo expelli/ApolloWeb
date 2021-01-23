@@ -1,18 +1,43 @@
 <mat-card style="margin:  20px;">
-    <mat-form-field class="example-full-width" style="width: 100%;">
-        <mat-label>Nach Vorstellung suchen</mat-label>
-        <input matNativeControl matInput [formControl]="searchControl" type="text"
-            [matAutocomplete]="deleteAutocomplete" placeholder="Jurassic Park" aria-label="Film"
-            [(ngModel)]="searchMAS" />
-        <mat-autocomplete #deleteAutocomplete="matAutocomplete" [displayWith]="displayMovie">
-            <mat-option *ngFor="let screening of schedule | async" [value]="screening"
-               >{{screening.movie!.title}}
-            </mat-option>
-        </mat-autocomplete>
+    <mat-card-subtitle>Vorführungen bis zum:</mat-card-subtitle>
+    <mat-form-field>
+        <input matInput [matDatepicker]="endDatePicker" placeholder="Enddatum" [(ngModel)]="endDate"
+            name="endDateDatepicker">
+        <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #endDatePicker>
+        </mat-datepicker>
     </mat-form-field>
 </mat-card>
+<mat-card style="margin-top:  20px;margin-left: 20px;margin-right: 20px;">
+    
+    <div fxLayout="row wrap">
+        <div fxFlex="70%">
+            <mat-card-title>Nach Filmen & Vorführungen suchen und filtern</mat-card-title>
+            <mat-form-field class="example-full-width" style="width: 100%;">
+                <mat-label>Nach Vorstellung suchen</mat-label>
+                <input matNativeControl matInput [formControl]="searchControl" type="text"
+                    [matAutocomplete]="deleteAutocomplete" placeholder="Jurassic Park" aria-label="Film"
+                    />
+                <mat-autocomplete #deleteAutocomplete="matAutocomplete" [displayWith]="displayMovie">
+                    <mat-option *ngFor="let screening of schedule | async" [value]="screening.movie!.title">
+                        {{screening.movie!.title}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+        </div>
+        <div fxFlex="30%" >
+            <mat-card-title style="margin-left: 20px">Nur für den gewählten Tag suchen</mat-card-title>
+            <mat-form-field style="margin-left: 20px">
+                <input matInput [matDatepicker]="searchDateDatepicker" placeholder="gewähltes Datum" [(ngModel)]="searchDate"
+                    name="searchDateDatepicker">
+                <mat-datepicker-toggle matSuffix [for]="searchDateDatepicker"></mat-datepicker-toggle>
+                <mat-datepicker #searchDateDatepicker>
+                </mat-datepicker>
+            </mat-form-field>
+        </div>
+    </div>
+</mat-card>
 <div fxLayout="row wrap" style="width: 100%;">
-    <Apollo-schedule-item fxFlex="20%"  *ngFor="let screening of getSchedule()"
-        [movieAndScreening]="screening">
+    <Apollo-schedule-item fxFlex="20%" *ngFor="let screening of getSchedule()" [movieAndScreening]="screening">
     </Apollo-schedule-item>
 </div>

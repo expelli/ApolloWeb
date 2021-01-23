@@ -8,6 +8,13 @@
             "name": "Launch localhost",
             "url": "http://localhost:4200/index.html",
             "webRoot": "${workspaceFolder}"
-        }
+        },
+        {
+            "name": "Launch Chrome",
+            "type": "chrome",
+            "request": "launch",
+            "url": "http://localhost:4200/index.html",
+            "webRoot": "${workspaceFolder}"
+        },
     ]
 }

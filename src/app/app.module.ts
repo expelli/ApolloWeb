@@ -50,12 +50,13 @@ import {MatChipsModule} from '@angular/material/chips';
 import { ScreeningCompactPipe } from './pipes/screening-compact.pipe';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 
-
 import {
   NgxMatDatetimePickerModule, 
   NgxMatNativeDateModule, 
   NgxMatTimepickerModule 
 } from '@angular-material-components/datetime-picker';
+import { ApiDatePipePipe } from './pipes/api-date-pipe.pipe';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 
@@ -80,7 +81,8 @@ import {
     VideoUrlIframePipe,
     RowControlComponent,
     RowEditorComponent,
-    ScreeningCompactPipe
+    ScreeningCompactPipe,
+    ApiDatePipePipe
   ],
   imports: [
     FlexLayoutModule,
@@ -113,6 +115,7 @@ import {
     //
     NgxMatDatetimePickerModule,
     NgxMatTimepickerModule,
+    MatNativeDateModule,
     NgxMatNativeDateModule,
   ],
   providers: [DatePipe],

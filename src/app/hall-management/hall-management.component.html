@@ -5,7 +5,7 @@
                 <mat-card-title color="primary">Kinosaal anlegen</mat-card-title>
                 <mat-form-field>
                     <mat-label>Kinosaal-Name</mat-label>
-                    <input matInput type=" text" />
+                    <input matInput type=" text" [(ngModel)]="newHall.name" />
                 </mat-form-field>
             </mat-card-content>
             <div style="margin-bottom: 20px;">
@@ -18,19 +18,18 @@
                     Reihe unten anfügen
                 </button>
             </div>
-            <Apollo-row-editor [hall]="newHall" [update]="false"></Apollo-row-editor>
-            <button mat-raised-button color="primary">Kinosaal anlegen</button>
+            <Apollo-row-editor [(hall)]="newHall" [update]="false"></Apollo-row-editor>
+            <button mat-raised-button color="primary" (click)="addHall()">Kinosaal anlegen</button>
         </mat-card>
     </mat-tab>
-
     <mat-tab label="Kinosaal bearbeiten">
         <mat-card style="margin-top: 10px;">
             <mat-card-title color="primary">Kinosaal bearbeiten</mat-card-title>
             <mat-card-content>
                 <mat-form-field style="margin-right: 20px;">
-                    <mat-label>Genre</mat-label>
-                    <mat-select (selectionChange)="updHallChanged($event.value)">
-                        <mat-option ngDefaultControl (name)="hall.id" *ngFor="let hall of halls" [value]="hall" [ngModel]="updHall">
+                    <mat-label>Kinosaal</mat-label>
+                    <mat-select (selectionChange)="updHallChanged($event.value)" [(ngModel)]="updHall">
+                        <mat-option ngDefaultControl (name)="hall.id" *ngFor="let hall of halls" [value]="hall" >
                             {{hall.name}} (ID: {{hall.id}})
                         </mat-option>
                     </mat-select>
@@ -39,7 +38,7 @@
                     <mat-label>Genre-Name</mat-label>
                     <input matInput type="text" [(ngModel)]="updHall.name" />
                 </mat-form-field>
-                <Apollo-row-editor [hall]="updHall"[update]="true" ></Apollo-row-editor>
+                <Apollo-row-editor [(hall)]="updHall" [update]="true" ></Apollo-row-editor>
                 <div style="margin-bottom: 20px;">
                     <button mat-stroked-button color="accent" style="margin-right: 20px;" (click)="deleteRow(updHall)">
                         <mat-icon>delete_forever</mat-icon>
@@ -52,7 +51,7 @@
                 </div>
             </mat-card-content>
 
-            <button mat-raised-button color="primary">Kinosaal bearbeiten</button>
+            <button mat-raised-button color="primary" (click)="updateHall()" >Kinosaal bearbeiten</button>
         </mat-card>
     </mat-tab>
     <mat-tab label="Kinosaal löschen">
@@ -68,7 +67,7 @@
                     </mat-select>
                 </mat-form-field>
             </mat-card-content>
-            <button mat-raised-button color="primary">Kinosaal löschen</button>
+            <button mat-raised-button color="primary"(click)="deleteHall()" >Kinosaal löschen</button>
         </mat-card>
     </mat-tab>
 </mat-tab-group>

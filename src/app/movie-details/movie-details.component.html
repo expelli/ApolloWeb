@@ -25,20 +25,13 @@
             <mat-card-content>
                 <p style="font-size: medium;">{{movie.description}}</p>
                 <p>{{movie.actors}}</p>
-                <p>{{movie!.trailer | videoUrlIframe}}</p>
             </mat-card-content>
         </mat-card>
         <mat-card style="margin: 20px">
             <mat-card-content >
                 <div style="position:relative;padding-bottom:56.25%;">
-<!--<youtube-player videoId="98o3hdlRPZI" fxLayoutAlign="center center"  style="width:100%;height:100%;position:absolute;left:0px;top:0px;"
-suggestedQuality="highres" frameborder="0" 
-
-></youtube-player>-->
-
                <iframe style="width:100%;height:100%;position:absolute;left:0px;top:0px;" [src]="movie.trailer | videoUrlIframe"
                     frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen>
                 </iframe></div>
             </mat-card-content>

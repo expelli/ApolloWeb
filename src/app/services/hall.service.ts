@@ -15,19 +15,26 @@ export class HallService {
   private errorHandler(error: Error | any): Observable<any> {
     console.log(error);
     return of(null);
-    
-  } 
 
-  getAllHalls(): Observable<Array<Hall>>{
+  }
+
+  getAllHalls(): Observable<Array<Hall>> {
     return this.http.get<Array<Hall>>(`${environment.server}/hall`).pipe(catchError(this.errorHandler));
   }
 
-  getHallDeepById(id: number): Observable<Hall>{
-    return this.http.get<Array<Hall>>(`${environment.server}/hall/${id}`).pipe(catchError(this.errorHandler));
+  getHallDeepById(id: number): Observable<Hall> {
+    return this.http.get<Array<Hall>>(`${environment.server}/hall/${id}?loadDeep=true`).pipe(catchError(this.errorHandler));
   }
 
-  deleteHall(id: number | undefined){
+  deleteHall(id: number | undefined) {
     return this.http.delete(`${environment.server}/hall/${id}`).pipe(catchError(this.errorHandler));
   }
 
+  addHall(hall: Hall): Observable<Hall> {
+    return this.http.post(`${environment.server}/hall`, hall).pipe(catchError(this.errorHandler));
+  }
+
+  updateHall(hall: Hall) {
+    return this.http.put(`${environment.server}/hall/${hall.id}`, hall).pipe(catchError(this.errorHandler));
+  }
 }

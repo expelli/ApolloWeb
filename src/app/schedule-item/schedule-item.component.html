@@ -1,7 +1,7 @@
 
     <mat-card style="margin: 20px;" [routerLink]="['movie',movieAndScreening.movie!.id]">
         <mat-card-content>
-            <mat-card-subtitle>{{movieAndScreening.screening!.startTime}}</mat-card-subtitle>
+            <mat-card-subtitle>{{movieAndScreening.screening!.startTime | date:'medium'}}</mat-card-subtitle>
             <img mat-card-image src="{{movieAndScreening.movie!.poster!}}">
             <mat-card-title>{{movieAndScreening.movie!.title}}</mat-card-title>
         </mat-card-content>

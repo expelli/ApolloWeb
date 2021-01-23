@@ -22,14 +22,10 @@
                     </mat-select>
                 </mat-form-field>
                 <mat-form-field>
-                    <input matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a date" [(ngModel)]="newScreening.startTime" name="addDatepicker">
-                    <mat-datepicker-toggle matSuffix  [for]="$any(picker)"></mat-datepicker-toggle>
+                    <input matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a date"
+                        [(ngModel)]="newScreening.startTime" name="addDatepicker">
+                    <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
                     <ngx-mat-datetime-picker #picker [showSpinners]="true" [showSeconds]="false">
-
-                        <ng-template>
-
-                            <span>OK</span>
-                        </ng-template>
                     </ngx-mat-datetime-picker>
                 </mat-form-field>
             </mat-card-content>
@@ -42,41 +38,46 @@
             <mat-card-title color="primary">Vorstellung bearbeiten</mat-card-title>
             <mat-card-content>
                 <form class="example-form">
-                    <mat-form-field>
-                        <mat-label>Vorstellung</mat-label>
-
-                        <input matNativeControl type="text" placeholder="Pick one" aria-label="Film" />
-                        <!-- matInput [formControl]="myControl"
-                            [matAutocomplete]="auto"-->
-                        <!--  <mat-autocomplete #auto="matAutocomplete">
-                            <mat-option >*ngFor="let option of options" [value]="option"-->
-                        <!-- {{option}}
-                        </mat-autocomplete>-->
+                    <mat-form-field class="example-full-width" style="width: 100%;">
+                        <mat-label>Nach Vorstellung suchen</mat-label>
+                        <input matNativeControl matInput [formControl]="updateControl" input="text"
+                            [(ngModel)]="updScreening" [matAutocomplete]="updateAutocomplete" 
+                            placeholder="Jurassic Park" aria-label="Film" style="width: 500px;"
+                           />
+                        <mat-autocomplete #updateAutocomplete="matAutocomplete" [displayWith]="displayMas">
+                            <mat-option *ngFor="let screening of screenings | async" [value]="screening">{{screening |
+                                screeningCompact}}
+                            </mat-option>
+                        </mat-autocomplete>
                     </mat-form-field>
-                    <mat-form-field>
+                   <mat-form-field style="margin-right: 20px;">
                         <mat-label>Film</mat-label>
-
-                        <input matNativeControl type="text" placeholder="Pick one" aria-label="Film" />
-                        <!-- matInput [formControl]="myControl"
-                        [matAutocomplete]="auto"-->
-                        <!--  <mat-autocomplete #auto="matAutocomplete">
-                        <mat-option >*ngFor="let option of options" [value]="option"-->
-                        <!-- {{option}}
-                    </mat-autocomplete>-->
+                        <mat-select (selectionChange)="updScreeningMovieChanged($event.value)"
+                            [(ngModel)]="updScreening.screening!.movieId" name="update_movie_select">
+                            <mat-option ngDefaultControl *ngFor="let movie of movies" [value]="movie.id" (name)="'update_movie'+movie.id!.toString()">
+                                {{movie.title}}
+                            </mat-option>
+                        </mat-select>
                     </mat-form-field>
-                    <mat-form-field>
+                    <mat-form-field style="margin-right: 20px;">
                         <mat-label>Kinosaal</mat-label>
-                        <mat-select></mat-select>
+                        <mat-select (selectionChange)="updScreeningHallChanged($event.value)"
+                            [(ngModel)]="updScreening.screening!.hallId" name="update_hall_select">
+                            <mat-option ngDefaultControl *ngFor="let hall of halls" [value]="hall.id" (name)="'update_hall'+hall.id!.toString()">
+                                {{hall.name}}
+                            </mat-option>
+                        </mat-select>
                     </mat-form-field>
                     <mat-form-field>
-                        <mat-label>Startzeitpunkt</mat-label>
-                        <input color="primary" matInput type="datetime-local" />
+                        <input matInput [ngxMatDatetimePicker]="updatepicker" placeholder="Choose a date"
+                            [(ngModel)]="updScreening.screening!.startTime" name="addDatepicker">
+                        <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
+                        <ngx-mat-datetime-picker #updatepicker [showSpinners]="true" [showSeconds]="false">
+                        </ngx-mat-datetime-picker>
                     </mat-form-field>
                 </form>
             </mat-card-content>
-
-            <button mat-raised-button color="primary">Vorstellung bearbeiten</button>
-
+            <button mat-raised-button color="primary" (click)="updateScreening()">Vorstellung bearbeiten</button>
         </mat-card>
     </mat-tab>
     <mat-tab label="Vorstellung löschen">
@@ -91,9 +92,9 @@
                     </mat-form-field>
                     <mat-form-field class="example-full-width" style="width: 100%;">
                         <mat-label>Nach Vorstellung suchen</mat-label>
-                        <input matNativeControl matInput (keyup)="keyup.emit(searchTerm.value)" type="text" #searchTerm class="prompt"
-                            [matAutocomplete]="deleteAutocomplete" placeholder="Jurassic Park" aria-label="Film"
-                            style="width: 500px;" [(ngModel)]="delScreening" />
+                        <input matNativeControl matInput (keyup)="keyup.emit(searchTerm.value)" type="text" #searchTerm
+                            class="prompt" [matAutocomplete]="deleteAutocomplete" placeholder="Jurassic Park"
+                            aria-label="Film" style="width: 500px;" [(ngModel)]="delScreening" />
                         <mat-autocomplete #deleteAutocomplete="matAutocomplete" [displayWith]="displayMas">
                             <mat-option *ngFor="let screening of screenings | async" [value]="screening">{{screening |
                                 screeningCompact}}
