@@ -48,6 +48,15 @@ import { RowControlComponent } from './row-control/row-control.component';
 import { RowEditorComponent } from './row-editor/row-editor.component';
 import {MatChipsModule} from '@angular/material/chips';
 import { ScreeningCompactPipe } from './pipes/screening-compact.pipe';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+
+
+import {
+  NgxMatDatetimePickerModule, 
+  NgxMatNativeDateModule, 
+  NgxMatTimepickerModule 
+} from '@angular-material-components/datetime-picker';
+
 
 
 @NgModule({
@@ -98,7 +107,13 @@ import { ScreeningCompactPipe } from './pipes/screening-compact.pipe';
     MatProgressSpinnerModule,
     MatDividerModule,
     YouTubePlayerModule,
-    MatChipsModule
+    MatChipsModule,
+    MatDatepickerModule,
+ 
+    //
+    NgxMatDatetimePickerModule,
+    NgxMatTimepickerModule,
+    NgxMatNativeDateModule,
   ],
   providers: [DatePipe],
   bootstrap: [AppComponent]

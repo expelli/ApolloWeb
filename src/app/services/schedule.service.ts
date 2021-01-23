@@ -28,4 +28,12 @@ export class ScheduleService {
     return this.http.get<Array<Screening>>(`${environment.server}/schedule/currentSchedule?searchTerm=${search}`).pipe(catchError(this.errorHandler));
   }
 
+  addScreening(screening: Screening): Observable<Screening>{
+    return this.http.post(`${environment.server}/schedule`,screening).pipe(catchError(this.errorHandler));
+  }
+
+  deleteScreening(id: number | undefined){
+    return this.http.delete(`${environment.server}/schedule/${id}`).pipe(catchError(this.errorHandler));
+  }
+
 }
