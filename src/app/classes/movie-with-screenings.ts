@@ -4,8 +4,8 @@ import { ScreeningFreeSeats } from "./screening-free-seats";
 
 export class MovieWithScreenings {
     constructor(
-       public movie: Movie,
-       public screenings: ScreeningFreeSeats[]
+       public movie?: Movie,
+       public screenings?: ScreeningFreeSeats[]
        ){}
 }
 

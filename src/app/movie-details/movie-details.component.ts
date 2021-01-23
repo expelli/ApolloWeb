@@ -13,15 +13,19 @@ export class MovieDetailsComponent implements OnInit {
 
   @Input() movie!: Movie;
 
-  constructor(private route: ActivatedRoute, 
+  constructor(private route: ActivatedRoute,
     private movieService: MovieService,
     private genreService: GenreService,
-    private router: Router) { }
+    private router: Router) {
+    this.movie = new Movie;
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => this.movieService.getMovieById(params['id']).subscribe(
-      res => { this.genreService.getGenreById(res.genreId).subscribe(gen => res.genre = gen), 
-        this.movie = res;console.log(this.movie.trailer) ;console.log(this.movie.trailer?.split("=")[1])}));
+      res => {
+        this.genreService.getGenreById(res.genreId).subscribe(gen => res.genre = gen),
+        this.movie = res; 
+      }));
   }
 
 }

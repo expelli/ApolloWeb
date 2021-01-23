@@ -12,6 +12,7 @@ import { MovieService } from '../services/movie.service';
 export class ScreeningListComponent implements OnInit {
 
   constructor(private movieService: MovieService,private route: ActivatedRoute, private router: Router) {
+    this.movieWithScreenings = new MovieWithScreenings;
     
    }
 
@@ -19,7 +20,6 @@ export class ScreeningListComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => this.movieService.getMovieSchedule(params['id']).subscribe(res => {
-      console.log(res);
        this.movieWithScreenings = res;
       }));
   }

@@ -9,7 +9,7 @@ export class VideoUrlIframePipe implements PipeTransform {
   constructor(private sanitizer: DomSanitizer){}
 
   transform(value: string| undefined): SafeResourceUrl {
-    var url = "https://www.youtube.com/embed/"+(value!.split("=")[1])
+    var url = "https://www.youtube.com/embed/"+(value?.split("=")[1])
     return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 

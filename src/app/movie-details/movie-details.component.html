@@ -20,8 +20,8 @@
         <mat-card style="margin: 20px">
             <mat-card-title style="margin-bottom: 40px;font-size: xx-large;"  >{{movie.title}}</mat-card-title>
 
-            <mat-card-subtitle style="font-size: x-large;margin-bottom: 20px;">Laufzeit: {{movie.duration}} Minuten</mat-card-subtitle>
-            <mat-card-subtitle style="font-size: x-large;margin-bottom: 20px;">Genre: {{movie.genre!.name}}</mat-card-subtitle>
+            <mat-card-subtitle style="font-size: x-large;margin-bottom: 20px;">Laufzeit: {{movie?.duration}} Minuten</mat-card-subtitle>
+            <mat-card-subtitle style="font-size: x-large;margin-bottom: 20px;">Genre: {{movie?.genre?.name!}}</mat-card-subtitle>
             <mat-card-content>
                 <p style="font-size: medium;">{{movie.description}}</p>
                 <p>{{movie.actors}}</p>

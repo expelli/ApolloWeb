@@ -13,7 +13,10 @@ export class ScreeningListItemComponent implements OnInit {
   @Input() screening!: ScreeningFreeSeats;
   @Input() movie!: Movie;
 
-  constructor() { }
+  constructor() {
+    this.movie = new Movie;
+    this.screening = new ScreeningFreeSeats;
+   }
 
   ngOnInit(): void {
   }
