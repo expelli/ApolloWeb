@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+;
 
 @Component({
   selector: 'Apollo-customer-view',
@@ -8,6 +9,7 @@ import { Component, OnInit } from '@angular/core';
 export class CustomerViewComponent implements OnInit {
 
   constructor() { }
+
 
   ngOnInit(): void {
   }

@@ -48,6 +48,7 @@ import { RowEditorComponent } from './row-editor/row-editor.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { ScreeningCompactPipe } from './pipes/screening-compact.pipe';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { JwksValidationHandler } from 'angular-oauth2-oidc-jwks'; 
 
 import {
   NgxMatDatetimePickerModule,
@@ -56,6 +57,7 @@ import {
 } from '@angular-material-components/datetime-picker';
 import { ApiDatePipePipe } from './pipes/api-date-pipe.pipe';
 import { MatNativeDateModule } from '@angular/material/core';
+import { OAuthModule } from 'angular-oauth2-oidc';
 
 
 
@@ -109,14 +111,13 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatDividerModule,
     MatChipsModule,
     MatDatepickerModule,
-
-    //
     NgxMatDatetimePickerModule,
     NgxMatTimepickerModule,
     MatNativeDateModule,
     NgxMatNativeDateModule,
+    OAuthModule.forRoot()
   ],
-  providers: [DatePipe],
+  providers: [DatePipe, OAuthModule, JwksValidationHandler ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
