@@ -3,73 +3,80 @@
         <mat-card style="margin-top: 10px;">
             <mat-card-content>
                 <mat-card-title color="primary">Vorstellung anlegen</mat-card-title>
-                <mat-form-field style="margin-right: 20px;">
-                    <mat-label>Film</mat-label>
-                    <mat-select (selectionChange)="newScreeningMovieChanged($event.value)">
-                        <mat-option ngDefaultControl *ngFor="let movie of movies" [(ngModel)]="newScreening.hall"
-                            [value]="movie">
-                            {{movie.title}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field style="margin-right: 20px;">
-                    <mat-label>Kinosaal</mat-label>
-                    <mat-select (selectionChange)="newScreeningHallChanged($event.value)">
-                        <mat-option ngDefaultControl *ngFor="let hall of halls" [(ngModel)]="newScreening.hall"
-                            [value]="hall">
-                            {{hall.name}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field>
-                    <input matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a date"
-                        [(ngModel)]="newScreening.startTime" name="addDatepicker">
-                    <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
-                    <ngx-mat-datetime-picker #picker [showSpinners]="true" [showSeconds]="false">
-                    </ngx-mat-datetime-picker>
-                </mat-form-field>
-            </mat-card-content>
-            <button mat-raised-button color="primary" (click)="addScreening()">Vorstellung anlegen</button>
-        </mat-card>
-    </mat-tab>
-
-    <mat-tab label="Vorstellung bearbeiten">
-        <mat-card style="margin-top: 10px;">
-            <mat-card-title color="primary">Vorstellung bearbeiten</mat-card-title>
-            <mat-card-content>
-                <form class="example-form">
-                    <mat-form-field class="example-full-width" style="width: 100%;">
-                        <mat-label>Nach Vorstellung suchen</mat-label>
-                        <input matNativeControl matInput [formControl]="updateControl" input="text"
-                            [(ngModel)]="updScreening" [matAutocomplete]="updateAutocomplete" 
-                            placeholder="Jurassic Park" aria-label="Film" style="width: 500px;"
-                           />
-                        <mat-autocomplete #updateAutocomplete="matAutocomplete" [displayWith]="displayMas">
-                            <mat-option *ngFor="let screening of screenings | async" [value]="screening">{{screening |
-                                screeningCompact}}
-                            </mat-option>
-                        </mat-autocomplete>
-                    </mat-form-field>
-                   <mat-form-field style="margin-right: 20px;">
+                <form #addForm="ngForm">
+                    <mat-form-field style="margin-right: 20px;">
                         <mat-label>Film</mat-label>
-                        <mat-select (selectionChange)="updScreeningMovieChanged($event.value)"
-                            [(ngModel)]="updScreening.screening!.movieId" name="update_movie_select">
-                            <mat-option ngDefaultControl *ngFor="let movie of movies" [value]="movie.id" (name)="'update_movie'+movie.id!.toString()">
+                        <mat-select required (selectionChange)="newScreeningMovieChanged($event.value)"
+                            name="new_movie_select">
+                            <mat-option required ngDefaultControl *ngFor="let movie of movies"
+                                [(ngModel)]="newScreening.hall" name="new_movie" [value]="movie">
                                 {{movie.title}}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field style="margin-right: 20px;">
                         <mat-label>Kinosaal</mat-label>
-                        <mat-select (selectionChange)="updScreeningHallChanged($event.value)"
-                            [(ngModel)]="updScreening.screening!.hallId" name="update_hall_select">
-                            <mat-option ngDefaultControl *ngFor="let hall of halls" [value]="hall.id" (name)="'update_hall'+hall.id!.toString()">
+                        <mat-select required (selectionChange)="newScreeningHallChanged($event.value)"
+                            name="new_hall_select">
+                            <mat-option ngDefaultControl *ngFor="let hall of halls" [(ngModel)]="newScreening.hall"
+                                name="new_hall" [value]="hall">
                                 {{hall.name}}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field>
-                        <input matInput [ngxMatDatetimePicker]="updatepicker" placeholder="Choose a date"
+                        <input required matInput [ngxMatDatetimePicker]="picker" placeholder="Wähle einen Zeitpunkt"
+                            [(ngModel)]="newScreening.startTime" name="addDatepicker">
+                        <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
+                        <ngx-mat-datetime-picker #picker [showSpinners]="true" [showSeconds]="false">
+                        </ngx-mat-datetime-picker>
+                    </mat-form-field>
+                </form>
+            </mat-card-content>
+            <button mat-raised-button color="primary" [disabled]="addForm.invalid" (click)="addScreening()">Vorstellung
+                anlegen</button>
+        </mat-card>
+    </mat-tab>
+    <mat-tab label="Vorstellung bearbeiten">
+        <mat-card style="margin-top: 10px;">
+            <mat-card-title color="primary">Vorstellung bearbeiten</mat-card-title>
+            <mat-card-content>
+                <form #updFrom="ngForm">
+                    <div>
+                        <mat-form-field class="example-full-width" style="width: 100%;">
+                            <mat-label>Vorstellung</mat-label>
+                            <mat-select required (selectionChange)="updScreeningChanged($event.value)"
+                                name="new_hall_select">
+                                <mat-option required ngDefaultControl *ngFor="let screening of screenings"
+                                    [(ngModel)]="updScreening" name="update_screenings" [value]="screening">
+                                    {{screening.startTime |date:'dd.MM.YYYY - H:mm'}} {{screening.movie!.title}}
+                                    @{{screening.hall!.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <mat-form-field style="margin-right: 20px;">
+                        <mat-label>Film</mat-label>
+                        <mat-select required (selectionChange)="updScreeningMovieChanged($event.value)"
+                            [(ngModel)]="updScreening.screening!.movieId" name="update_movie_select">
+                            <mat-option required ngDefaultControl *ngFor="let movie of movies" [value]="movie.id"
+                                (name)="'update_movie'+movie.id!.toString()">
+                                {{movie.title}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field style="margin-right: 20px;">
+                        <mat-label>Kinosaal</mat-label>
+                        <mat-select required (selectionChange)="updScreeningHallChanged($event.value)"
+                            [(ngModel)]="updScreening.screening!.hallId" name="update_hall_select">
+                            <mat-option required ngDefaultControl *ngFor="let hall of halls" [value]="hall.id"
+                                (name)="'update_hall'+hall.id!.toString()">
+                                {{hall.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input required matInput [ngxMatDatetimePicker]="updatepicker" placeholder="Zeitpunkt wählen"
                             [(ngModel)]="updScreening.screening!.startTime" name="addDatepicker">
                         <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
                         <ngx-mat-datetime-picker #updatepicker [showSpinners]="true" [showSeconds]="false">
@@ -77,33 +84,30 @@
                     </mat-form-field>
                 </form>
             </mat-card-content>
-            <button mat-raised-button color="primary" (click)="updateScreening()">Vorstellung bearbeiten</button>
+            <button mat-raised-button color="primary" (click)="updateScreening()"
+                [disabled]="updFrom.invalid">Vorstellung bearbeiten</button>
         </mat-card>
     </mat-tab>
     <mat-tab label="Vorstellung löschen">
         <mat-card style="margin-top: 10px;">
             <mat-card-title color="primary" style="margin-bottom: 20px;">Vorstellung löschen</mat-card-title>
             <mat-card-content>
-                <mat-card>
-                    <mat-card-subtitle color="primary">Vorstellung suchen:</mat-card-subtitle>
-                    <mat-form-field style="margin-right: 20px;">
-                        <mat-label>Datum</mat-label>
-                        <input matNativeControl type="date">
-                    </mat-form-field>
+                <form #delForm="ngForm">
                     <mat-form-field class="example-full-width" style="width: 100%;">
-                        <mat-label>Nach Vorstellung suchen</mat-label>
-                        <input matNativeControl matInput (keyup)="keyup.emit(searchTerm.value)" type="text" #searchTerm
-                            class="prompt" [matAutocomplete]="deleteAutocomplete" placeholder="Jurassic Park"
-                            aria-label="Film" style="width: 500px;" [(ngModel)]="delScreening" />
-                        <mat-autocomplete #deleteAutocomplete="matAutocomplete" [displayWith]="displayMas">
-                            <mat-option *ngFor="let screening of screenings | async" [value]="screening">{{screening |
-                                screeningCompact}}
+                        <mat-label>Vorstellung</mat-label>
+                        <mat-select required (selectionChange)="delScreeningChanged($event.value)"
+                            name="del_hall_select">
+                            <mat-option required ngDefaultControl *ngFor="let screening of screenings"
+                                [(ngModel)]="delScreening" name="delete_screenings" [value]="screening">
+                                {{screening.startTime |date:'dd.MM.YYYY - H:mm'}} {{screening.movie!.title}}
+                                @{{screening.hall!.name}}
                             </mat-option>
-                        </mat-autocomplete>
+                        </mat-select>
                     </mat-form-field>
-                </mat-card>
+                </form>
             </mat-card-content>
-            <button mat-raised-button color="primary" (click)="deleteScreening()">gewählte Vorstellung löschen</button>
+            <button mat-raised-button color="primary" (click)="deleteScreening()" [disabled]="delForm.invalid">gewählte
+                Vorstellung löschen</button>
         </mat-card>
     </mat-tab>
 </mat-tab-group>

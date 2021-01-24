@@ -1,19 +1,19 @@
 <mat-tab-group style="margin: 10px;" dynamicHeight="true">
     <mat-tab label="Genre anlegen">
         <mat-card style="margin-top: 10px;">
-            <form #addForm="ngForm" (ngSubmit)="addGenre()">
+            <form #addForm="ngForm" >
                 <mat-card-content>
                     <mat-card-title color="primary">Genre anlegen</mat-card-title>
                     <mat-form-field style="margin-right: 20px;">
                         <mat-label>Genre-ID</mat-label>
-                        <input matInput type=" text" [(ngModel)]="newGenre.id" required name="id" />
+                        <input matInput type=" text" [(ngModel)]="newGenre.id" required name="add_id" />
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Genre-Name</mat-label>
-                        <input matInput type="text" [(ngModel)]="newGenre.name" required name="name" />
+                        <input matInput type="text" [(ngModel)]="newGenre.name" required name="add_name" />
                     </mat-form-field>
                 </mat-card-content>
-                <button mat-raised-button color="primary" type="submit" [disabled]="addForm.invalid" >Genre anlegen</button>
+                <button mat-raised-button color="primary" (click)="addGenre()" [disabled]="addForm.invalid" >Genre anlegen</button>
             </form>
         </mat-card>
     </mat-tab>
@@ -21,20 +21,22 @@
         <mat-card style="margin-top: 10px;">
             <mat-card-title color="primary">Genre bearbeiten</mat-card-title>
             <mat-card-content>
+                <form #updateForm="ngForm">
                 <mat-form-field style="margin-right: 20px;">
                     <mat-label>Genre</mat-label>
-                    <mat-select (selectionChange)="updGenreChanged($event.value)">
-                        <mat-option ngDefaultControl *ngFor="let genre of genres" [value]="genre" name="update"
+                    <mat-select required (selectionChange)="updGenreChanged($event.value)" id="test" name="genereSelect" >
+                        <mat-option required ngDefaultControl *ngFor="let genre of genres" [value]="genre" name="updateOption"
                             [(ngModel)]="updGenre">
                             {{genre | genreCompact}}</mat-option>
                     </mat-select>
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Genre-Name</mat-label>
-                    <input matInput type="text" [(ngModel)]="updGenre.name" required />
+                    <input matInput type="text" [(ngModel)]="updGenre.name" required name="updateInput" #updateInport/>
                 </mat-form-field>
+                </form>
             </mat-card-content>
-            <button mat-raised-button color="primary" (click)="updateGenre()" >Genre bearbeiten</button>
+            <button mat-raised-button color="primary" type="submit" (click)="updateGenre()" [disabled]="updateForm.invalid">Genre bearbeiten</button>
         </mat-card>
     </mat-tab>
     <mat-tab label="Genre löschen">
@@ -44,8 +46,8 @@
                 <form #deleteForm="ngForm">
                     <mat-form-field>
                         <mat-label>Genre</mat-label>
-                        <mat-select (selectionChange)="delGenreChanged($event.value)">
-                            <mat-option ngDefaultControl *ngFor="let genre of genres" [value]="genre" name="delete"
+                        <mat-select required (selectionChange)="delGenreChanged($event.value)" name="deleteSelect">
+                            <mat-option required ngDefaultControl *ngFor="let genre of genres" [value]="genre" name="deleteOption"
                                 [(ngModel)]="delGenre">
                                 {{genre | genreCompact}}
                             </mat-option>
@@ -53,7 +55,7 @@
                     </mat-form-field>
                 </form>
             </mat-card-content>
-            <button mat-raised-button color="primary" type="submit" (click)="deleteGenre()" [disabled]="!delGenre.id">Genre löschen</button>
+            <button mat-raised-button color="primary"  [disabled]="deleteForm.invalid" type="submit" (click)="deleteGenre()">Genre löschen</button>
         </mat-card>
     </mat-tab>
 </mat-tab-group>

@@ -1,17 +1,12 @@
 import { Component, EventEmitter, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { from, Observable, of } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, map, startWith, switchMap } from 'rxjs/operators';
 import { Hall } from '../classes/hall';
 import { Movie } from '../classes/movie';
 import { MovieAndScreening } from '../classes/movie-and-screening';
-import { MovieWithScreenings } from '../classes/movie-with-screenings';
 import { Screening } from '../classes/screening';
-import { ScreeningCompactPipe } from '../pipes/screening-compact.pipe';
 import { HallService } from '../services/hall.service';
 import { MovieService } from '../services/movie.service';
 import { ScheduleService } from '../services/schedule.service';
-//import { filter } from 'rxjs/operators/filter';
+
 
 @Component({
   selector: 'Apollo-screening-management',
@@ -20,41 +15,60 @@ import { ScheduleService } from '../services/schedule.service';
 })
 export class ScreeningManagementComponent implements OnInit {
 
-  keyup = new EventEmitter<string>();
+ 
   constructor(
     private scheduleService: ScheduleService,
     private movieService: MovieService,
     private hallService: HallService) {
+    this.initializeData();
+  }
+
+  //members
+  delScreening!: Screening;
+  newScreening!: Screening;
+  updScreening!: MovieAndScreening;
+  // combo boxes
+  movies!: Movie[];
+  halls!: Hall[];
+  screenings!: Screening[];
+
+  initializeData() {
     this.newScreening = new Screening;
-    this.newScreening.startTime = new Date;
     this.updScreening = new MovieAndScreening;
     this.updScreening.screening = new Screening;
     this.updScreening.movie = new Movie;
   }
-
-  updateControl = new FormControl();
-
-  movies!: Movie[];
-  halls!: Hall[];
-
-  screenings!: Observable<MovieAndScreening[]>
-
-  delScreening!: MovieAndScreening;
-  newScreening!: Screening;
-  updScreening!: MovieAndScreening;
-
-  ngOnInit(): void {
-    //this.keyup.pipe(debounceTime(500), distinctUntilChanged(), switchMap((value: string) =>
-      //this.scheduleService.screeningSearch(new Date, value))).subscribe(res => this.screenings = of(res));
-    this.movieService.getAllMovies().subscribe(res => this.movies = res)
+  
+  loadData(){
+    this.movieService.getAllMovies().subscribe(res => this.movies = res);
     this.hallService.getAllHalls().subscribe(res => this.halls = res);
-    this.updateControl.valueChanges.pipe(debounceTime(500), distinctUntilChanged(), switchMap((val: string, index) => {
-      return this.scheduleService.screeningSearch(undefined, val,undefined);
-    })).subscribe(res => {
-      this.screenings = of(res);
-    });
+    this.scheduleService.getAllScreenings().subscribe(res => this.screenings = res );
+    this.initializeData()
   }
 
+  ngOnInit(): void {;
+    this.loadData();
+  }
+  
+
+  deleteScreening() {
+    this.scheduleService.deleteScreening(this.delScreening.id).subscribe(res => {this.loadData(); return res;});
+  }
+
+  updateScreening() {
+  this.updScreening!.screening!.hall = undefined;
+  this.updScreening!.screening!.movie = undefined;
+    this.scheduleService.updateScreening(this.updScreening.screening!).subscribe(res => {this.loadData(); return res;});
+  }
+
+  addScreening() {
+    this.newScreening.movieId = this.newScreening.movie?.id;
+    this.newScreening.hallId = this.newScreening.hall?.id;
+    this.newScreening.movie!.poster = undefined;
+    this.scheduleService.addScreening(this.newScreening).subscribe(res => {this.loadData(); return res;});
+  }
+
+  // ====== combo box selectionChange =====
 
   newScreeningMovieChanged(value: any) {
     this.newScreening.movie = value;
@@ -64,7 +78,6 @@ export class ScreeningManagementComponent implements OnInit {
     this.newScreening.hall = value;
   }
 
-
   updScreeningMovieChanged(value: any) {
     this.updScreening.movie = value;
   }
@@ -73,32 +86,12 @@ export class ScreeningManagementComponent implements OnInit {
     this.updScreening!.screening!.hall = value;
   }
 
-
-
-  displayMas(mas: MovieAndScreening): string {
-    return (mas && mas!.screening && mas!.screening!.id!) ? (new ScreeningCompactPipe).transform(mas) : ''; 
+  updScreeningChanged(value: any){
+    //using JSON for achieving a deep copy => selection list won't be changed this way
+    this.updScreening.screening =  JSON.parse(JSON.stringify(value));
   }
 
-  deleteScreening() {
-    this.scheduleService.deleteScreening(this.delScreening.screening!.id).subscribe();
+  delScreeningChanged(value: any){
+    this.delScreening = value;
   }
-
-  updateScreening() {
-  this.updScreening!.screening!.hall = undefined;
-  this.updScreening!.screening!.movie = undefined;
-    this.scheduleService.updateScreening(this.updScreening.screening!).subscribe();
-  }
-
-  addScreening() {
-    this.newScreening.movieId = this.newScreening.movie?.id;
-    this.newScreening.hallId = this.newScreening.hall?.id;
-    this.newScreening.movie!.poster = undefined;
-    this.scheduleService.addScreening(this.newScreening).subscribe();
-  }
-
-  //private _filter(movie: Movie): Observable<Movie[]> {
-  // const filterValue = movie.title?.toLowerCase();
-  //  return this.movies.pipe(filter(m => m.title.includes(filterValue)));
-  //}
-
 }

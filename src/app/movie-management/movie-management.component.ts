@@ -16,8 +16,7 @@ export class MovieManagementComponent implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef;
 
   constructor(private movieService: MovieService,
-    private genreService: GenreService,
-    private snackBar: MatSnackBar) {
+    private genreService: GenreService) {
     this.initializeData();
   }
 

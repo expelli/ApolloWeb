@@ -9,7 +9,6 @@
                             <mat-label>Titel</mat-label>
                             <input matInput name="titleInput" type=" text" [(ngModel)]="newMovie!.title" required
                                 minlength="1" maxlength="100" />
-                               
                         </mat-form-field>
                     </div>
                     <div>
@@ -53,25 +52,26 @@
                         </mat-form-field>
                     </div>
                     <div>
-                       
+
+                        <div>
+
+                            <!-- Display files names -->
                             <div>
-
-                                <!-- Display files names -->
-                                <div>
-                                    <input matInput #fileUp [(ngModel)]="newImageTag" readonly name="name" />
-                                </div>
-                                <!-- Browse Button -->
-                                <div>
-                                    <button mat-flat-button type="button" color="primary" (click)="fileInput.click()">
-                                        Bild auswählen
-                                    </button>
-                                </div>
-
-                                <!-- Fetch selected filed on change -->
-                                <input style="width: 0%; height: 0%;" name="fileInput" type="file" #fileInput id="uploadFile"
-                                    (change)="uploadFileEvtAdd($event)" name="uploadFile" accept="image/*" />
+                                <input matInput #fileUp [(ngModel)]="newImageTag" readonly name="name" />
                             </div>
-                    
+                            <!-- Browse Button -->
+                            <div>
+                                <button mat-flat-button type="button" color="primary" (click)="fileInput.click()">
+                                    Bild auswählen
+                                </button>
+                            </div>
+
+                            <!-- Fetch selected filed on change -->
+                            <input style="width: 0%; height: 0%;" name="fileInput" type="file" #fileInput
+                                id="uploadFile" (change)="uploadFileEvtAdd($event)" name="uploadFile"
+                                accept="image/*" />
+                        </div>
+
                     </div>
                 </form>
             </mat-card-content>
@@ -122,25 +122,26 @@
                     <input matInput type="number" [(ngModel)]="updMovie.duration" />
                 </mat-form-field>
                 <div>
-                  
-                        <div>
-                         
-                            <!-- Browse Button -->
-                      
-                                <button mat-flat-button type="button" color="primary" (click)="fileInputUpd.click()">
-                                    Bild auswählen
-                                </button>
-                    <!-- Display files names -->
-                            <span>
-                                <input matInput #fileUpUpd [(ngModel)]="updImageTag" readonly name="nameUpd" />
-                            </span>
-                            <!-- Fetch selected filed on change -->
-                            <input style="width: 0%; height: 0%;" name="fileInputUpd" type="file" #fileInputUpd id="uploadFile"
-                                (change)="uploadFileEvtAdd($event)" accept="image/*" />
-                        </div>
-                
+
+                    <div>
+
+                        <!-- Browse Button -->
+
+                        <button mat-flat-button type="button" color="primary" (click)="fileInputUpd.click()">
+                            Bild auswählen
+                        </button>
+                        <!-- Display files names -->
+                        <span>
+                            <input matInput #fileUpUpd [(ngModel)]="updImageTag" readonly name="nameUpd" />
+                        </span>
+                        <!-- Fetch selected filed on change -->
+                        <input style="width: 0%; height: 0%;" name="fileInputUpd" type="file" #fileInputUpd
+                            id="uploadFile" (change)="uploadFileEvtAdd($event)" accept="image/*" />
+                    </div>
+
                 </div>
-                <img mat-card-sm-image *ngIf="updMovie.poster" [src]="updMovie.poster" style="width: 10%;height: 10%;"/>
+                <img mat-card-sm-image *ngIf="updMovie.poster" [src]="updMovie.poster"
+                    style="width: 10%;height: 10%;" />
             </mat-card-content>
 
             <button mat-raised-button color="primary" (click)="updateMovie()">Film bearbeiten</button>
@@ -152,18 +153,19 @@
             <mat-card-title color="primary">Film löschen</mat-card-title>
             <mat-card-content>
                 <form #deleteForm="ngForm">
-                <mat-form-field >
-                    <mat-label>Film löschen</mat-label>
-                    <mat-select (selectionChange)="delMovieChanged($event.value)" >
-                        <mat-option required ngDefaultControl *ngFor="let movie of movies" [value]="movie" [(ngModel)]="delMovie"
-                            [name]="movie!.id!.toString()">
-                            {{movie.title}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Film löschen</mat-label>
+                        <mat-select (selectionChange)="delMovieChanged($event.value)">
+                            <mat-option required ngDefaultControl *ngFor="let movie of movies" [value]="movie"
+                                [(ngModel)]="delMovie" [name]="movie!.id!.toString()">
+                                {{movie.title}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </form>
             </mat-card-content>
-            <button mat-raised-button color="primary" (click)="deleteMovie()" [disabled]="deleteForm.invalid">Film löschen</button>
+            <button mat-raised-button color="primary" (click)="deleteMovie()" [disabled]="deleteForm.invalid">Film
+                löschen</button>
         </mat-card>
     </mat-tab>
 </mat-tab-group>

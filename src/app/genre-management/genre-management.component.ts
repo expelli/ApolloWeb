@@ -11,66 +11,55 @@ import { GenreService } from '../services/genre.service';
 })
 export class GenreManagementComponent implements OnInit {
 
-  @ViewChild('addForm', {static: true}) addForm!: NgForm;
+  @ViewChild('addForm', { static: true }) addForm!: NgForm;
 
-  constructor(private genreService: GenreService, private snackBar: MatSnackBar) {
-    this.initInputs();
+  constructor(private genreService: GenreService) {
+    this.initializeData();
   }
-  initInputs() {
-    this.newGenre= new Genre(), 
-    this.delGenre= new Genre(),  
-    this.updGenre= new Genre()
-  }
+
+  //members 
+  newGenre!: Genre;
+  delGenre?: Genre;
+  updGenre!: Genre;
+  //combo box
   genres!: Genre[];
 
-  newGenre!: Genre;
-  delGenre!: Genre;
-  updGenre!: Genre;
-
+  initializeData() {
+    this.newGenre = new Genre(),
+    this.updGenre = new Genre()
+    this.delGenre = undefined;
+  }
   ngOnInit(): void {
     this.loadData();
   }
 
-  loadData(){
+  loadData() {
+    this.initializeData;
     this.genreService.getAllGenres().subscribe(res => this.genres = res);
-    this.initInputs();
   }
 
-  addGenre(){
-    this.genreService.addGenre(this.newGenre).subscribe();
-    this.showSnackBar(""+this.newGenre.name+" "+this.newGenre.id,"")
-    this.loadData();
+  addGenre() {
+    this.genreService.addGenre(this.newGenre).subscribe(res => this.loadData()) //reload and reset inputs);
+    
   }
 
-  deleteGenre(){
-    this.genreService.deleteGenre(this.delGenre.id).subscribe();
-    this.showSnackBar(""+this.delGenre.id,"");
-    this.loadData();
-    //this.addForm.reset(this.newGenre);
+  deleteGenre() {
+    this.genreService.deleteGenre(this.delGenre!.id).subscribe(res => this.loadData()) //reload and reset inputs);
+    
   }
-  updateGenre(){
-    this.genreService.updateGenre(this.updGenre).subscribe();
-    this.showSnackBar(""+this.delGenre.id,"");
-    this.loadData();
-    //this.addForm.reset(this.newGenre);
+  updateGenre() {
+    this.genreService.updateGenre(this.updGenre).subscribe(res => this.loadData()) //reload and reset inputs);
   }
 
-  newGenreNotProperyDefined():boolean {
-    return (!this.newGenre.id) || (!this.newGenre.name) || (this.newGenre.id =='') ||  (this.newGenre.name =='');
-  }
+  // combo box selectionChange
 
-  delGenreChanged(value: any){
+  delGenreChanged(value: any) {
     this.delGenre = value;
   }
 
-  updGenreChanged(value: any){
-    this.updGenre = value;
-  }
-
-  private showSnackBar(message: string, action: string) {
-    this.snackBar.open(message, action, {
-      duration: 2500,
-    });
+  updGenreChanged(value: any) {
+    //using JSON for achieving a deep copy => selection list won't be changed this way
+    this.updGenre = JSON.parse(JSON.stringify(value));
   }
 
 }
