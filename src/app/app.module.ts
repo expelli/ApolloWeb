@@ -42,7 +42,6 @@ import { ScreeningListComponent } from './screening-list/screening-list.componen
 import { ScreeningListItemComponent } from './screening-list-item/screening-list-item.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDividerModule } from '@angular/material/divider';
-import { YouTubePlayerModule } from '@angular/youtube-player';
 import { VideoUrlIframePipe } from './pipes/video-url-iframe.pipe';
 import { RowControlComponent } from './row-control/row-control.component';
 import { RowEditorComponent } from './row-editor/row-editor.component';
@@ -108,7 +107,6 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatProgressBarModule,
     MatProgressSpinnerModule,
     MatDividerModule,
-    YouTubePlayerModule,
     MatChipsModule,
     MatDatepickerModule,
 
