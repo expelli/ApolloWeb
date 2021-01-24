@@ -1,6 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Component, OnInit } from '@angular/core';
 import { Genre } from '../classes/genre';
 import { GenreService } from '../services/genre.service';
 
@@ -10,8 +8,6 @@ import { GenreService } from '../services/genre.service';
   styleUrls: ['./genre-management.component.css']
 })
 export class GenreManagementComponent implements OnInit {
-
-  @ViewChild('addForm', { static: true }) addForm!: NgForm;
 
   constructor(private genreService: GenreService) {
     this.initializeData();

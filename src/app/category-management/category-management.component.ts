@@ -10,41 +10,53 @@ import { CategoryService } from '../services/category.service';
 })
 export class CategoryManagementComponent implements OnInit {
 
-  constructor(private categoryService: CategoryService,  private snackBar: MatSnackBar) {
-    this.newCategory= new Category();
-    this.delCategory= undefined;
-    this.updCategory= new Category();
+  constructor(private categoryService: CategoryService) {
+    this.initializeData();
   }
 
-  categories!: Category[];
-  newCategory: Category;
+  newCategory!: Category;
   delCategory?: Category;
   updCategory?: Category;
+  //combo box
+  categories!: Category[];
+
+  initializeData() {
+    this.newCategory = new Category();
+    this.delCategory = undefined;
+    this.updCategory = new Category();
+  }
+
+  loadData() {
+    this.categoryService.getAllCategories().subscribe(res => this.categories = res);
+    this.initializeData();
+  }
 
   ngOnInit(): void {
-    this.categoryService.getAllCategories().subscribe(res => this.categories = res);
+    this.loadData();
   }
 
   addCategory() {
-    this.newCategory.id = undefined;
-    this.categoryService.addCategory(this.newCategory).subscribe();
-    
+    this.newCategory.id = undefined; //ensures its undefined
+    this.categoryService.addCategory(this.newCategory).subscribe(res => { this.loadData(); return res });
+
   }
 
   deleteCategory() {
-    this.categoryService.deleteCategory(this.delCategory!.id).subscribe();
-  
+    this.categoryService.deleteCategory(this.delCategory!.id).subscribe(res => { this.loadData(); return res });
+
   }
   updateCategory() {
-    this.categoryService.updateCategory(this.updCategory!).subscribe();
- 
+    this.categoryService.updateCategory(this.updCategory!).subscribe(res => { this.loadData(); return res });
+
   }
 
-  delCategoryChanged(value: any){
+  // ==== combo box selectionChange
+
+  delCategoryChanged(value: any) {
     this.delCategory = value;
   }
 
-  updCategoryChanged(value: any){
+  updCategoryChanged(value: any) {
     this.updCategory = value;
   }
 
