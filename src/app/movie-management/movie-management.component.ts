@@ -92,18 +92,17 @@ export class MovieManagementComponent implements OnInit {
   }
 
   addMovie() {
-    this.movieService.addMovie(this.newMovie).subscribe();
-    this.loadData(); //resetting everything
+    this.movieService.addMovie(this.newMovie).subscribe( res => {this.loadData(); return res});
+   
   }
 
   deleteMovie() {
-    this.movieService.deleteMovie(this.delMovie?.id).subscribe();
-    this.loadData(); //resetting everything
+    this.movieService.deleteMovie(this.delMovie?.id).subscribe( res => {this.loadData(); return res});
+
   }
 
   updateMovie() {
-    this.movieService.updateMovie(this.updMovie).subscribe();
-    this.loadData(); //resetting everything
+    this.movieService.updateMovie(this.updMovie).subscribe( res => {this.loadData(); return res});
   }
 
   // === combo box selectionChange ===

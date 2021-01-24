@@ -1,4 +1,4 @@
-import { Input } from '@angular/core';
+import { EventEmitter, Input, Output } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { Category } from '../classes/category';
 import { Row } from '../classes/row';
@@ -13,6 +13,7 @@ export class RowControlComponent implements OnInit {
   @Input() row!: Row;
   @Input() categories!: Category[];
   @Input() hallId!: number;
+  @Output() categoryChanged = new EventEmitter<Row>();
   constructor() { }
 
   ngOnInit(): void {
@@ -27,6 +28,11 @@ export class RowControlComponent implements OnInit {
       new_seat.seatNumber = i;
       this.row.seats!.push(new_seat)
     }
+  }
+
+  categoryChange(value: any) {
+    this.row.priceCategoryId = value;
+    this.categoryChanged.emit(this.row);
   }
 
 }

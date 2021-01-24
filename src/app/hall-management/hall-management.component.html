@@ -1,13 +1,17 @@
 <mat-tab-group style="margin: 10px;" dynamicHeight="true">
     <mat-tab label="Kinosaal anlegen">
         <mat-card style="margin-top: 10px;">
-            <mat-card-content>
-                <mat-card-title color="primary">Kinosaal anlegen</mat-card-title>
-                <mat-form-field>
-                    <mat-label>Kinosaal-Name</mat-label>
-                    <input matInput type=" text" [(ngModel)]="newHall.name" />
-                </mat-form-field>
-            </mat-card-content>
+            <form #addForm="ngForm">
+                <mat-card-content>
+                    <mat-card-title color="primary">Kinosaal anlegen</mat-card-title>
+
+                    <mat-form-field>
+                        <mat-label>Kinosaal-Name</mat-label>
+                        <input required matInput type=" text" [(ngModel)]="newHall.name" name="new_hall_name" />
+                    </mat-form-field>
+                </mat-card-content>
+                <Apollo-row-editor [(hall)]="newHall" [update]="false"></Apollo-row-editor>
+            </form>
             <div style="margin-bottom: 20px;">
                 <button mat-stroked-button color="accent" style="margin-right: 20px;" (click)="deleteRow(newHall)">
                     <mat-icon>delete_forever</mat-icon>
@@ -18,56 +22,65 @@
                     Reihe unten anfügen
                 </button>
             </div>
-            <Apollo-row-editor [(hall)]="newHall" [update]="false"></Apollo-row-editor>
-            <button mat-raised-button color="primary" (click)="addHall()">Kinosaal anlegen</button>
+            <button mat-raised-button color="primary" [disabled]="addForm.invalid" (click)="addHall()">Kinosaal anlegen</button>
         </mat-card>
     </mat-tab>
     <mat-tab label="Kinosaal bearbeiten">
         <mat-card style="margin-top: 10px;">
             <mat-card-title color="primary">Kinosaal bearbeiten</mat-card-title>
             <mat-card-content>
-                <mat-form-field style="margin-right: 20px;">
-                    <mat-label>Kinosaal</mat-label>
-                    <mat-select (selectionChange)="updHallChanged($event.value)" [(ngModel)]="updHall">
-                        <mat-option ngDefaultControl (name)="hall.id" *ngFor="let hall of halls" [value]="hall" >
-                            {{hall.name}} (ID: {{hall.id}})
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field>
-                    <mat-label>Genre-Name</mat-label>
-                    <input matInput type="text" [(ngModel)]="updHall.name" />
-                </mat-form-field>
-                <Apollo-row-editor [(hall)]="updHall" [update]="true" ></Apollo-row-editor>
+                <form #updateForm="ngForm">
+                    <mat-form-field style="margin-right: 20px;">
+                        <mat-label>Kinosaal</mat-label>
+                        <mat-select required (selectionChange)="updHallChanged($event.value)" [(ngModel)]="updHall"
+                            name="hall-selector">
+                            <mat-option required ngDefaultControl (name)="hall.id" *ngFor="let hall of halls"
+                                [value]="hall" name="hall_update_option">
+                                {{hall.name}} (ID: {{hall.id}})
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Kinosaal-Name</mat-label>
+                        <input required matInput type="text" [(ngModel)]="updHall.name" name="update_name_hall" />
+                    </mat-form-field>
+                    <Apollo-row-editor [(hall)]="updHall" [update]="true"></Apollo-row-editor>
+                </form>
                 <div style="margin-bottom: 20px;">
-                    <button mat-stroked-button color="accent" style="margin-right: 20px;" (click)="deleteRow(updHall)">
+                    <button mat-stroked-button color="accent" style="margin-right: 20px;"
+                        [disabled]="updHall.id == undefined" (click)="deleteRow(updHall)">
                         <mat-icon>delete_forever</mat-icon>
                         Unterste Reihe löschen
                     </button>
-                    <button mat-stroked-button color="accent" style="margin-right: 20px;" (click)="addRow(updHall)">
+                    <button mat-stroked-button color="accent" style="margin-right: 20px;"
+                        [disabled]="updHall.id == undefined" (click)="addRow(updHall)">
                         <mat-icon>add_circle_outline</mat-icon>
                         Reihe unten anfügen
                     </button>
                 </div>
             </mat-card-content>
-
-            <button mat-raised-button color="primary" (click)="updateHall()" >Kinosaal bearbeiten</button>
+            <button mat-raised-button color="primary" name="updateButton" (click)="updateHall()"
+                [disabled]="updateForm.invalid">Kinosaal bearbeiten</button>
         </mat-card>
     </mat-tab>
     <mat-tab label="Kinosaal löschen">
         <mat-card style="margin-top: 10px;">
             <mat-card-title color="primary">Kinosaal löschen</mat-card-title>
             <mat-card-content>
-                <mat-form-field>
-                    <mat-label>Kinosaal</mat-label>
-                    <mat-select (selectionChange)="delHallChanged($event.value)">
-                        <mat-option ngDefaultControl *ngFor="let hall of halls" [value]="hall" [(ngModel)]="delHall" (name)="hall.id">
-                            {{hall.name}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
+                <form #delform="ngForm">
+                    <mat-form-field>
+                        <mat-label>Kinosaal</mat-label>
+                        <mat-select required (selectionChange)="delHallChanged($event.value)" name="selector_hall">
+                            <mat-option required ngDefaultControl *ngFor="let hall of halls" [value]="hall"
+                                [(ngModel)]="delHall" name="hall_option">
+                                {{hall.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
             </mat-card-content>
-            <button mat-raised-button color="primary"(click)="deleteHall()" >Kinosaal löschen</button>
+            <button mat-raised-button color="primary" (click)="deleteHall()" [disabled]="delform.invalid">Kinosaal
+                löschen</button>
         </mat-card>
     </mat-tab>
 </mat-tab-group>

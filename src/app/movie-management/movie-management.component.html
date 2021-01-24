@@ -52,26 +52,19 @@
                         </mat-form-field>
                     </div>
                     <div>
-
                         <div>
-
-                            <!-- Display files names -->
                             <div>
                                 <input matInput #fileUp [(ngModel)]="newImageTag" readonly name="name" />
                             </div>
-                            <!-- Browse Button -->
                             <div>
                                 <button mat-flat-button type="button" color="primary" (click)="fileInput.click()">
                                     Bild auswählen
                                 </button>
                             </div>
-
-                            <!-- Fetch selected filed on change -->
                             <input style="width: 0%; height: 0%;" name="fileInput" type="file" #fileInput
                                 id="uploadFile" (change)="uploadFileEvtAdd($event)" name="uploadFile"
                                 accept="image/*" />
                         </div>
-
                     </div>
                 </form>
             </mat-card-content>
@@ -84,68 +77,64 @@
         <mat-card style="margin-top: 10px;">
             <mat-card-title color="primary">Film bearbeiten</mat-card-title>
             <mat-card-content>
-                <mat-form-field>
+                <form #updForm="ngForm">
+                    <mat-form-field>
 
-                    <mat-select (selectionChange)="updMovieChanged($event.value)">
-                        <mat-option ngDefaultControl *ngFor="let movie of movies" [value]="movie" [(ngModel)]="updMovie"
-                            [name]="movie!.id!.toString()">
-                            {{movie.title}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field style="margin-right: 20px;">
-                    <mat-label>Titel</mat-label>
-                    <input matInput type=" text" [(ngModel)]="updMovie.title" />
-                </mat-form-field>
-                <mat-form-field style="margin-right: 20px;">
-                    <mat-label>Schauspieler</mat-label>
-                    <input matInput type="text" [(ngModel)]="updMovie.actors" />
-                </mat-form-field>
-                <mat-form-field style="margin-right: 20px;">
-                    <mat-label>Beschreibung</mat-label>
-                    <input matInput type="text" [(ngModel)]="updMovie.description" />
-                </mat-form-field>
-                <mat-form-field style="margin-right: 20px;">
-                    <mat-label>Trailer-Link</mat-label>
-                    <input matInput type="text" [(ngModel)]="updMovie.trailer" />
-                </mat-form-field>
-                <mat-form-field style="margin-right: 20px;">
-                    <mat-label>Genre</mat-label>
-                    <mat-select (selectionChange)="updGenreChanged($event.value)" [(ngModel)]="updMovie.genreId">
-                        <mat-option ngDefaultControl *ngFor="let gen of genres" [value]="gen.id" name="updateGenre">
-                            {{gen |genreCompact}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field style="margin-right: 20px;">
-                    <mat-label>Spieldauer</mat-label>
-                    <input matInput type="number" [(ngModel)]="updMovie.duration" />
-                </mat-form-field>
-                <div>
-
+                        <mat-select required (selectionChange)="updMovieChanged($event.value)" name="updMoviePicker">
+                            <mat-option required ngDefaultControl *ngFor="let movie of movies" [value]="movie"
+                                [(ngModel)]="updMovie" name="updMovieOption">
+                                {{movie.title}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field style="margin-right: 20px;">
+                        <mat-label>Titel</mat-label>
+                        <input required matInput type=" text" [(ngModel)]="updMovie.title" name="updTitle" />
+                    </mat-form-field>
+                    <mat-form-field style="margin-right: 20px;">
+                        <mat-label>Schauspieler</mat-label>
+                        <input matInput type="text" [(ngModel)]="updMovie.actors" name="updActors" />
+                    </mat-form-field>
+                    <mat-form-field style="margin-right: 20px;">
+                        <mat-label>Beschreibung</mat-label>
+                        <input required matInput type="text" [(ngModel)]="updMovie.description" name="upddescription" />
+                    </mat-form-field>
+                    <mat-form-field style="margin-right: 20px;">
+                        <mat-label>Trailer-Link</mat-label>
+                        <input required matInput type="text" [(ngModel)]="updMovie.trailer" name="updLink" />
+                    </mat-form-field>
+                    <mat-form-field style="margin-right: 20px;">
+                        <mat-label>Genre</mat-label>
+                        <mat-select required (selectionChange)="updGenreChanged($event.value)"
+                            [(ngModel)]="updMovie.genreId" name="updGenrePicker">
+                            <mat-option required ngDefaultControl *ngFor="let gen of genres" [value]="gen.id"
+                                name="updateGenre">
+                                {{gen |genreCompact}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field style="margin-right: 20px;">
+                        <mat-label>Spieldauer</mat-label>
+                        <input matInput required type="number" [(ngModel)]="updMovie.duration" name="updDuration" />
+                    </mat-form-field>
                     <div>
-
-                        <!-- Browse Button -->
-
-                        <button mat-flat-button type="button" color="primary" (click)="fileInputUpd.click()">
-                            Bild auswählen
-                        </button>
-                        <!-- Display files names -->
-                        <span>
-                            <input matInput #fileUpUpd [(ngModel)]="updImageTag" readonly name="nameUpd" />
-                        </span>
-                        <!-- Fetch selected filed on change -->
-                        <input style="width: 0%; height: 0%;" name="fileInputUpd" type="file" #fileInputUpd
-                            id="uploadFile" (change)="uploadFileEvtAdd($event)" accept="image/*" />
+                        <div>
+                            <button mat-flat-button type="button" color="primary" (click)="fileInputUpd.click()">
+                                Bild auswählen
+                            </button>
+                            <span>
+                                <input matInput #fileUpUpd [(ngModel)]="updImageTag" readonly name="nameUpd" />
+                            </span>
+                            <input style="width: 0%; height: 0%;" name="fileInputUpd" type="file" #fileInputUpd
+                                id="uploadFile" (change)="uploadFileEvtAdd($event)" accept="image/*" />
+                        </div>
                     </div>
-
-                </div>
+                </form>
                 <img mat-card-sm-image *ngIf="updMovie.poster" [src]="updMovie.poster"
                     style="width: 10%;height: 10%;" />
             </mat-card-content>
-
-            <button mat-raised-button color="primary" (click)="updateMovie()">Film bearbeiten</button>
-
+            <button mat-raised-button color="primary" (click)="updateMovie()" [disabled]="updForm.invalid">Film
+                bearbeiten</button>
         </mat-card>
     </mat-tab>
     <mat-tab label="Film löschen">

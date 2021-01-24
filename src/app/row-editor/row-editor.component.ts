@@ -14,39 +14,31 @@ import { HallService } from '../services/hall.service';
 export class RowEditorComponent implements OnInit, OnChanges {
   @Input() hall!: Hall;
   @Output() hallChange = new EventEmitter<Hall>();
-
   @Input() update!: boolean;
   constructor(private hallService: HallService, private categoryService: CategoryService) {
     this.hall = new Hall;
   }
-
-  oldId?: number;
+  categories!: Category[];
+  oldId?: number; // prevents recursion
 
   ngOnChanges(changes: SimpleChanges): void {
     if (!this.oldId || (this.oldId &&  this.oldId != this.hall.id)) {
       if (this.update && (this.hall!.id != undefined)) {
-        console.log("not null " + this.hall.name);
         this.hallService.getHallDeepById(this.hall!.id!).subscribe(res => {
           this.oldId = res.id;
           this.hall = res;
           this.hallChange.emit(this.hall);
-          console.log(this.hall);
         });
       }
     }
   }
 
-  categories!: Category[];
+  rowChanged(row: Row){
+    this.hall.rows?.find(res=>res.rowNumber == row.rowNumber)?.priceCategoryId == row.priceCategoryId;
+    this.hallChange.emit(this.hall);
+  }
 
   ngOnInit(): void {
-    // if (this.update && (this.hall != undefined) && (this.hall!.id != undefined)) {
-    //   this.hallService.getHallDeepById(this.hall!.id!).subscribe(res => {
-    //     this.hall = res;
-    //     this.hallChange.emit(this.hall);
-    //     console.log("init not null " + this.hall!.id);
-    //   });
-    //   console.log();
-    // }
      this.categoryService.getAllCategories().subscribe(res => this.categories = res)
   }
 

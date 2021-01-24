@@ -8,14 +8,14 @@
         <div fxFlex="33.33%">
             <mat-form-field>
                 <mat-label>Sitzplätze</mat-label>
-                <input (ngModelChange)="SeatNrChanged($event)" matInput type="number" [name]="row.rowNumber!.toString()" [ngModel]="row!.seats!.length" />
+                <input required (ngModelChange)="SeatNrChanged($event)" matInput type="number" name="rownuminput" [ngModel]="row!.seats!.length" />
             </mat-form-field>
         </div>
         <div fxFlex="33.33%">
             <mat-form-field>
                 <mat-label>Preiskategorie</mat-label>
-                <mat-select [(ngModel)]="row!.priceCategory">
-                    <mat-option ngDefaultControl *ngFor="let cat of categories" [value]="cat" (name)="cat.name">
+                <mat-select required [(ngModel)]="row!.priceCategoryId" name="catSelect" (selectionChange)="categoryChange($event.value)">
+                    <mat-option required ngDefaultControl *ngFor="let cat of categories" [value]="cat.id" name="row_cat">
                         {{cat |categoryCompact}}
                     </mat-option>
                 </mat-select>
