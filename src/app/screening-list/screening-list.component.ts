@@ -11,17 +11,23 @@ import { MovieService } from '../services/movie.service';
 })
 export class ScreeningListComponent implements OnInit {
 
-  constructor(private movieService: MovieService,private route: ActivatedRoute, private router: Router) {
+  constructor(private movieService: MovieService, private route: ActivatedRoute, private router: Router) {
     this.movieWithScreenings = new MovieWithScreenings;
-    
-   }
 
-   movieWithScreenings!: MovieWithScreenings;
-
-  ngOnInit(): void {
-    this.route.params.subscribe(params => this.movieService.getMovieSchedule(params['id']).subscribe(res => {
-       this.movieWithScreenings = res;
-      }));
   }
 
+  movieWithScreenings!: MovieWithScreenings;
+
+  ngOnInit(): void {
+
+    this.route.params.subscribe(params => {
+      if (params['id']) {
+        this.movieService.getMovieSchedule(params['id']).subscribe(res => {
+          this.movieWithScreenings = res;
+          this.movieWithScreenings.screenings = res.screenings!.filter(s => s.screening!.startTime! >= (new Date))
+        });
+      }
+    });
+  }
 }
+

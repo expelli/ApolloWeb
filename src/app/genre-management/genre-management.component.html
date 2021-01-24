@@ -13,8 +13,7 @@
                         <input matInput type="text" [(ngModel)]="newGenre.name" required name="name" />
                     </mat-form-field>
                 </mat-card-content>
-
-                <button mat-raised-button color="primary" type="submit" [disabled]="newGenreNotProperyDefined()" >Genre anlegen</button>
+                <button mat-raised-button color="primary" type="submit" [disabled]="addForm.invalid" >Genre anlegen</button>
             </form>
         </mat-card>
     </mat-tab>
