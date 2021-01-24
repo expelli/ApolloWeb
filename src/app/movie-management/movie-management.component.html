@@ -78,7 +78,7 @@
             <mat-card-title color="primary">Film bearbeiten</mat-card-title>
             <mat-card-content>
                 <form #updForm="ngForm">
-                    <mat-form-field>
+                    <mat-form-field style="margin-right: 20px;width: 100%">
 
                         <mat-select required (selectionChange)="updMovieChanged($event.value)" name="updMoviePicker">
                             <mat-option required ngDefaultControl *ngFor="let movie of movies" [value]="movie"
@@ -87,23 +87,23 @@
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
-                    <mat-form-field style="margin-right: 20px;">
+                    <mat-form-field style="margin-right: 20px;width: 100%">
                         <mat-label>Titel</mat-label>
                         <input required matInput type=" text" [(ngModel)]="updMovie.title" name="updTitle" />
                     </mat-form-field>
-                    <mat-form-field style="margin-right: 20px;">
+                    <mat-form-field style="margin-right: 20px;width: 100%">
                         <mat-label>Schauspieler</mat-label>
                         <input matInput type="text" [(ngModel)]="updMovie.actors" name="updActors" />
                     </mat-form-field>
-                    <mat-form-field style="margin-right: 20px;">
+                    <mat-form-field style="margin-right: 20px;width: 100%">
                         <mat-label>Beschreibung</mat-label>
                         <input required matInput type="text" [(ngModel)]="updMovie.description" name="upddescription" />
                     </mat-form-field>
-                    <mat-form-field style="margin-right: 20px;">
+                    <mat-form-field style="margin-right: 20px;width: 100%">
                         <mat-label>Trailer-Link</mat-label>
                         <input required matInput type="text" [(ngModel)]="updMovie.trailer" name="updLink" />
                     </mat-form-field>
-                    <mat-form-field style="margin-right: 20px;">
+                    <mat-form-field style="margin-right: 20px;width: 100%">
                         <mat-label>Genre</mat-label>
                         <mat-select required (selectionChange)="updGenreChanged($event.value)"
                             [(ngModel)]="updMovie.genreId" name="updGenrePicker">
