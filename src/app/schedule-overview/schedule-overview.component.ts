@@ -20,8 +20,6 @@ export class ScheduleOverviewComponent implements OnInit {
     this.schedule = from([]);
     this.endDate = new Date;
     this.endDate.setDate(this.endDate.getDate() + 14)
-    this.searchDate = new Date;
-    this.searchDate.setDate(this.searchDate.getDate()+1);
   }
 
   schedule!: Observable<MovieAndScreening[]>;
@@ -47,6 +45,12 @@ export class ScheduleOverviewComponent implements OnInit {
 
   displayMovie(mas: string): string {
     return mas;
+  }
+
+  public onSearchDate(): void {
+    this.scheduleService.screeningSearch(this.searchDate,undefined,this.endDate).subscribe(res => {
+      this.schedule = of(res);
+    });
   }
 
 }

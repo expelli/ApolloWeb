@@ -1,7 +1,7 @@
 <mat-card style="margin:  20px;">
     <mat-card-subtitle>Vorführungen bis zum:</mat-card-subtitle>
     <mat-form-field>
-        <input matInput [matDatepicker]="endDatePicker" placeholder="Enddatum" [(ngModel)]="endDate"
+        <input matInput [matDatepicker]="endDatePicker" placeholder="Enddatum" [(ngModel)]="endDate" (ngModelChange)="onSearchDate()"
             name="endDateDatepicker">
         <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
         <mat-datepicker #endDatePicker>
@@ -19,7 +19,7 @@
                     [matAutocomplete]="deleteAutocomplete" placeholder="Jurassic Park" aria-label="Film"
                     />
                 <mat-autocomplete #deleteAutocomplete="matAutocomplete" [displayWith]="displayMovie">
-                    <mat-option *ngFor="let screening of schedule | async" [value]="screening.movie!.title">
+                    <mat-option *ngFor="let screening of schedule | async" [value]="screening.movie!.title" >
                         {{screening.movie!.title}}
                     </mat-option>
                 </mat-autocomplete>
@@ -28,7 +28,7 @@
         <div fxFlex="30%" >
             <mat-card-title style="margin-left: 20px">Nur für den gewählten Tag suchen</mat-card-title>
             <mat-form-field style="margin-left: 20px">
-                <input matInput [matDatepicker]="searchDateDatepicker" placeholder="gewähltes Datum" [(ngModel)]="searchDate"
+                <input matInput [matDatepicker]="searchDateDatepicker" placeholder="gewähltes Datum" [(ngModel)]="searchDate"  (ngModelChange)="onSearchDate()"
                     name="searchDateDatepicker">
                 <mat-datepicker-toggle matSuffix [for]="searchDateDatepicker"></mat-datepicker-toggle>
                 <mat-datepicker #searchDateDatepicker>
